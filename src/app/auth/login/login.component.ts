@@ -40,7 +40,8 @@ export class LoginComponent implements OnInit {
 
     this.authSrv.login(email, password).pipe(
       tap((user: User) => {
-        this.store.dispatch(AuthActions.login({user}))
+        this.store.dispatch(AuthActions.login({user}));
+        this.router.navigateByUrl('\courses');
       })
     ).subscribe(
       noop,

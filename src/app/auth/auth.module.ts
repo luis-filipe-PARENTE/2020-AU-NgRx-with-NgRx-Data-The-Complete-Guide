@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { LoginComponent } from './login/login.component';
 import * as fromAuth from './reducers';
+import { authReducer } from './reducers';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import * as fromAuth from './reducers';
     MatInputModule,
     MatButtonModule,
     RouterModule.forChild([{ path: '', component: LoginComponent }]),
-    StoreModule.forFeature(fromAuth.featurekey, fromAuth.reducers, {}),
+    StoreModule.forFeature(fromAuth.featurekey, authReducer),
   ],
 
   declarations: [
@@ -28,13 +29,4 @@ import * as fromAuth from './reducers';
     LoginComponent
   ]
 })
-export class AuthModule {
-  // static forRoot(): ModuleWithProviders<AuthModule> {
-  //   return {
-  //     ngModule: AuthModule,
-  //     providers: [
-  //       AuthService
-  //     ]
-  //   };
-  // }
-}
+export class AuthModule {}
