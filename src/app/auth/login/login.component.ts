@@ -6,12 +6,9 @@ import { AppState } from 'app/reducers';
 import { noop } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+import { AuthActions } from '../action-types';
 import { AuthService } from '../auth.service';
 import { User } from '../model/user.model';
-
-import * as authActions from '../auth.actions';
-
-
 
 @Component({
   selector: 'login',
@@ -43,7 +40,7 @@ export class LoginComponent implements OnInit {
 
     this.authSrv.login(email, password).pipe(
       tap((user: User) => {
-        this.store.dispatch(authActions.login({user}))
+        this.store.dispatch(AuthActions.login({user}))
       })
     ).subscribe(
       noop,
