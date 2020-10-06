@@ -5,7 +5,11 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'app/reducers';
 import { noop } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
 import { AuthService } from '../auth.service';
+import { User } from '../model/user.model';
+
+import * as authActions from '../auth.actions';
 
 
 
@@ -28,12 +32,9 @@ export class LoginComponent implements OnInit {
       email: ['test@angular-university.io', [Validators.required]],
       password: ['test', [Validators.required]]
     });
-
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   login() {
     const { email, password } = this.form.value;
@@ -41,13 +42,13 @@ export class LoginComponent implements OnInit {
     console.log(`${email} - ${password}`);
 
     this.authSrv.login(email, password).pipe(
-      tap(console.log)
+      tap((user: User) => {
+        this.store.dispatch(authActions.login({user}))
+      })
     ).subscribe(
       noop,
       () => console.log('Login failed')
     );
-
-
   }
 
 }
