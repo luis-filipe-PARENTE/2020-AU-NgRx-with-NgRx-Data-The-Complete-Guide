@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
+import { AuthActions } from './auth/action-types';
 import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
 import { AppState } from './reducers';
 
@@ -51,6 +51,8 @@ export class AppComponent implements OnInit {
       this.isLoggedOut$ = this.store.select(isLoggedOut);
     }
     
-    logout() {}
-
+    logout() {
+      this.store.dispatch(AuthActions.logout());
+      this.router.navigateByUrl('/');
+    }
 }
