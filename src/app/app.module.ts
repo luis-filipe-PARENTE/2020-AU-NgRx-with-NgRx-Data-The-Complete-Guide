@@ -16,12 +16,14 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuardService } from './auth/auth.guard';
 import { metaReducers, reducers } from './reducers';
 
 const routes: Routes = [
   {
     path: 'courses',
-    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule)
+    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule),
+    canLoad: [AuthGuardService]
   },
   {
     path: '**',
