@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule, Routes } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoginComponent } from './login/login.component';
 import * as fromAuth from './reducers';
@@ -26,6 +27,7 @@ const ROUTES: Routes = [
     MatButtonModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(fromAuth.featurekey, authReducer),
+    EffectsModule.forFeature([])
   ],
 
   declarations: [
