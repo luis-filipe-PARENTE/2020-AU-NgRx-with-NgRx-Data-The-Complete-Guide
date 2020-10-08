@@ -9,17 +9,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
+import { ReactiveComponentModule } from '@ngrx/component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { metaReducers, reducers } from './reducers';
-
-
-
-
-
 
 const routes: Routes = [
   {
@@ -31,8 +28,6 @@ const routes: Routes = [
     redirectTo: '/'
   }
 ];
-
-
 
 @NgModule({
   declarations: [
@@ -50,10 +45,10 @@ const routes: Routes = [
     MatListModule,
     MatToolbarModule,
     AuthModule/*.forRoot()*/,
+    ReactiveComponentModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
