@@ -76,7 +76,15 @@ const routes: Routes = [
     MatToolbarModule,
     AuthModule/*.forRoot()*/,
     ReactiveComponentModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(reducers, { 
+      metaReducers,
+      runtimeChecks: {
+        strictActionImmutability: true,
+        strictStateImmutability: true,
+        strictActionSerializability: true,
+        strictStateSerializability: true
+      }, 
+    }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([LoaderEffect]),
     StoreRouterConnectingModule.forRoot({
