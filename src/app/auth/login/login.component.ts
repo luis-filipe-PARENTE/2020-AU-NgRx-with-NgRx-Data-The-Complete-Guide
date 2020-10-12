@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from 'app/reducers';
+import { AppState } from 'app/state/reducers';
 import { noop } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

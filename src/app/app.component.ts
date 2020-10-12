@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 
 import { AuthActions } from './auth/action-types';
 import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
-import { AppState } from './reducers';
+import { User } from './auth/model/user.model';
+import { AppState } from './state/reducers';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,10 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+
+
+      // this.store.dispatch(AuthActions.login({user: (JSON.parse(localStorage.getItem('user')))}));
+
 
       this.router.events.subscribe(event  => {
         switch (true) {
@@ -53,6 +58,5 @@ export class AppComponent implements OnInit {
     
     logout() {
       this.store.dispatch(AuthActions.logout());
-      this.router.navigateByUrl('/');
     }
 }
