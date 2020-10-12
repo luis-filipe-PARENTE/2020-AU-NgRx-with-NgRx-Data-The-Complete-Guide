@@ -1,3 +1,4 @@
+import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import {
   ActionReducerMap,
 
@@ -9,13 +10,15 @@ import { environment } from '../../../environments/environment';
 
 // tslint:disable-next-line: no-empty-interface
 export interface AppState {
-  auth: AuthState
+  auth: AuthState,
+  router: RouterReducerState
 }
 
 
 
 export const reducers: ActionReducerMap<AppState> = {
-  auth: undefined
+  auth: undefined,
+  router: routerReducer
 };
 
 
