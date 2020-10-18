@@ -1,4 +1,3 @@
-import {CourseResolverService} from './courses.resolver';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,13 +16,16 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardService } from 'app/auth/auth.guard';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 
 import { CourseComponent } from './course/course.component';
 import { CoursesCardListComponent } from './courses-card-list/courses-card-list.component';
+import { CourseResolverService } from './courses.resolver';
 import { EditCourseDialogComponent } from './edit-course-dialog/edit-course-dialog.component';
 import { HomeComponent } from './home/home.component';
 import { CoursesHttpService } from './services/courses-http.service';
+import { CoursesEffects } from './state/courses.effects';
 
 
 export const coursesRoutes: Routes = [
@@ -59,7 +61,8 @@ export const coursesRoutes: Routes = [
     MatDatepickerModule,
     MatMomentDateModule,
     ReactiveFormsModule,
-    RouterModule.forChild(coursesRoutes)
+    RouterModule.forChild(coursesRoutes),
+    EffectsModule.forFeature([CoursesEffects])
   ],
   declarations: [
     HomeComponent,
