@@ -39,7 +39,7 @@ export function initApplication(store: Store<AuthState>, router: Router): Functi
       filter(user => user !== undefined),
       take(1)
     ).subscribe((auth) => {
-      console.log('this is the user connected!', auth.user);
+      // console.log('this is the user connected!', auth.user);
       store.dispatch(AppActions.FinishAppInitializer());
       resolve(true);
     });

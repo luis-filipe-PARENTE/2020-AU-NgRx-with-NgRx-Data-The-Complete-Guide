@@ -1,3 +1,4 @@
+import {CourseResolverService} from './courses.resolver';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +29,10 @@ import { CoursesHttpService } from './services/courses-http.service';
 export const coursesRoutes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    resolve : {
+      courses: CourseResolverService
+    }
   },
   {
     path: ':courseUrl',
