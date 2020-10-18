@@ -25,6 +25,7 @@ import { CourseResolverService } from './courses.resolver';
 import { EditCourseDialogComponent } from './edit-course-dialog/edit-course-dialog.component';
 import { HomeComponent } from './home/home.component';
 import { CoursesHttpService } from './services/courses-http.service';
+import { coursesReducer } from './state/course.reducers';
 import { CoursesEffects } from './state/courses.effects';
 
 
@@ -62,7 +63,8 @@ export const coursesRoutes: Routes = [
     MatMomentDateModule,
     ReactiveFormsModule,
     RouterModule.forChild(coursesRoutes),
-    EffectsModule.forFeature([CoursesEffects])
+    EffectsModule.forFeature([CoursesEffects]),
+    StoreModule.forFeature('courses', coursesReducer)
   ],
   declarations: [
     HomeComponent,
