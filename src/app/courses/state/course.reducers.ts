@@ -13,9 +13,7 @@ export interface CoursesState {
 */
 
 
-export interface CoursesState extends EntityState<Course>{
-
-}
+export interface CoursesState extends EntityState<Course>{}
 
 // We have the same format
 // let state: CoursesState;  state.entities; state.ids
@@ -27,4 +25,8 @@ export const coursesReducer = createReducer(
     initialCoursesState,
     on(CoursesActions.allCoursesLoaded, (state, action)=> adapter.addAll(action.courses, state))
 )
+
+export const {
+    selectAll
+} = adapter.getSelectors();
 
