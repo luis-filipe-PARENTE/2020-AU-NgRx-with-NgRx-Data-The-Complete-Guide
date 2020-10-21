@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
 
 import { CoursesHttpService } from '../services/courses-http.service';
 import { CoursesActions } from './action-types';
@@ -17,7 +17,17 @@ export class CoursesEffects {
                 map(courses => (CoursesActions.allCoursesLoaded({courses}))),
                 catchError(({error}) => of(CoursesActions.allCoursesLoadedError({err: error}))) // just disconnect the server to see this error
             ))
-        ));
+    ));
+
+    saveUpdatedCourse$ = createEffect(() => this.actions$.pipe(
+        ofType(CoursesActions.courseUpdated),
+        concatMap(action => this.coursesHttpService.saveCourse(
+            action.update.id,
+            action.update.changes
+        )),
+        ),
+        {dispatch: false}
+    );
         
       constructor(
         private actions$: Actions,
