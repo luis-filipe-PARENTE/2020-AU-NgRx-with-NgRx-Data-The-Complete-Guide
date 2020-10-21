@@ -19,20 +19,13 @@ import * as coursesSelectors from '../state/course.selectors'
 export class HomeComponent implements OnInit {
 
     promoTotal$: Observable<number>;
-
-    loading$: Observable<boolean>;
-
     beginnerCourses$: Observable<Course[]>;
-
     advancedCourses$: Observable<Course[]>;
-
 
     constructor(
       private dialog: MatDialog,
       private store: Store<AppState>
-    ) {
-
-    }
+    ) {}
 
     ngOnInit() {
       this.reload();
@@ -46,7 +39,7 @@ export class HomeComponent implements OnInit {
     this.advancedCourses$ = this.store.pipe(
       select(coursesSelectors.selectCoursesByCategory, { category :'ADVANCED' })
     )
-    
+
     this.promoTotal$ = this.store.pipe(
       select(coursesSelectors.selectPromoTotoal)
     )
@@ -64,6 +57,4 @@ export class HomeComponent implements OnInit {
     this.dialog.open(EditCourseDialogComponent, dialogConfig);
 
   }
-
-
 }

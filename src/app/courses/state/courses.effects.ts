@@ -12,7 +12,7 @@ export class CoursesEffects {
 
     loadCourses$ = createEffect(() => this.actions$.pipe(
          ofType(CoursesActions.loadAllCourses),
-        switchMap(() => this.coursesHttpService.findAllCourses()
+         switchMap(() => this.coursesHttpService.findAllCourses()
             .pipe(
                 map(courses => (CoursesActions.allCoursesLoaded({courses}))),
                 catchError(({error}) => of(CoursesActions.allCoursesLoadedError({err: error}))) // just disconnect the server to see this error

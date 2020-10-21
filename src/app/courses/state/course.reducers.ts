@@ -13,20 +13,28 @@ export interface CoursesState {
 */
 
 
-export interface CoursesState extends EntityState<Course>{}
+export interface CoursesState extends EntityState<Course>{
+    allCoursesLoaded: boolean
+}
 
 // We have the same format
 // let state: CoursesState;  state.entities; state.ids
 
 export const adapter = createEntityAdapter<Course>({
     sortComparer: compareCourses,
-    selectId: (course) => course.courseId 
+    // selectId: (course) => course.id when is id you don't need to specify selectId, for instance if you have course.courseId
 });
-export const initialCoursesState = adapter.getInitialState();
+export const initialCoursesState = adapter.getInitialState({
+    allCoursesLoaded: false
+});
 
 export const coursesReducer = createReducer(
     initialCoursesState,
-    on(CoursesActions.allCoursesLoaded, (state, action)=> adapter.addAll(action.courses, state))
+    on(CoursesActions.allCoursesLoaded, (state, action)=> adapter.addAll(
+        action.courses, {
+        ...state,
+        allCoursesLoaded: true
+    }))
 )
 
 export const {

@@ -22,10 +22,18 @@ export const selectAdvancedCourses = createSelector(
 
 export const selectCoursesByCategory = createSelector(
     selectAllCourses,
-    (courses, props) => courses.filter(course => course.category == props.category)
+    (courses, props) => courses.filter(course => {
+        console.log(course.category);
+        return course.category === props.category
+    })
 );
 
 export const selectPromoTotoal = createSelector(
     selectAllCourses,
     (courses) => courses.filter(course => course.promo).length
+);
+
+export const areCoursesLoaded = createSelector(
+    selectCoursesState,
+    (state) => state.allCoursesLoaded
 );
