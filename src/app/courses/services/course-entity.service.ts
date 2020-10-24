@@ -3,6 +3,8 @@ import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory } f
 
 import { Course } from '../model/course';
 
+export const entityDataKey = 'Course';
+
 
 @Injectable()
 export class CourseEntityService extends EntityCollectionServiceBase<Course> {
@@ -10,7 +12,7 @@ export class CourseEntityService extends EntityCollectionServiceBase<Course> {
     constructor(
         serviceElementsFactory: EntityCollectionServiceElementsFactory
     ){
-        super('Course', serviceElementsFactory);  // ==>  @seeAlso [courses.module.ts] his key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
+        super(entityDataKey, serviceElementsFactory);  // ==>  @seeAlso [courses.module.ts] this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
     }
 
 }

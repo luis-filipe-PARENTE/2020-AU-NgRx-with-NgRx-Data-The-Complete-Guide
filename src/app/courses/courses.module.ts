@@ -15,37 +15,22 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { RouterModule, Routes } from '@angular/router';
-import { EntityDefinitionService, EntityMetadataMap } from '@ngrx/data';
+import { EntityDataService, EntityDefinitionService, EntityMetadataMap } from '@ngrx/data';
 
+import { CourseRoutingModule } from './course-routing.module';
 import { CourseComponent } from './course/course.component';
 import { CoursesCardListComponent } from './courses-card-list/courses-card-list.component';
 import { EditCourseDialogComponent } from './edit-course-dialog/edit-course-dialog.component';
 import { HomeComponent } from './home/home.component';
-import { CourseEntityService } from './services/course-entity.service';
-import { CoursesResolver } from './services/course-resolver.service';
+import { CourseEntityService, entityDataKey } from './services/course-entity.service';
+import { CoursesDataService } from './services/courses-data.service';
 import { CoursesHttpService } from './services/courses-http.service';
 
+
 const entityMetada: EntityMetadataMap = {
-  Course: {} // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
+  [entityDataKey]: {} // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
 };
 
-
-
-export const coursesRoutes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-    resolve: {
-      courses: CoursesResolver
-    }
-
-  },
-  {
-    path: ':courseUrl',
-    component: CourseComponent
-  }
-];
 
 @NgModule({
   imports: [
@@ -65,7 +50,7 @@ export const coursesRoutes: Routes = [
     MatDatepickerModule,
     MatMomentDateModule,
     ReactiveFormsModule,
-    RouterModule.forChild(coursesRoutes)
+    CourseRoutingModule
   ],
   declarations: [
     HomeComponent,
@@ -83,7 +68,7 @@ export const coursesRoutes: Routes = [
   providers: [
     CoursesHttpService,
     CourseEntityService,
-    CoursesResolver
+    CoursesDataService
   ]
 })
 export class CoursesModule {
@@ -91,8 +76,11 @@ export class CoursesModule {
   // we need to register modules that are lazy loaded 
   // Setting Up NgRx Data in a Lazy Loaded Module
   constructor(
-    private eds: EntityDefinitionService
+    private eds: EntityDefinitionService,
+    private entityDataServvice: EntityDataService,
+    private coursesDataService: CoursesDataService
   ) {
-    eds.registerMetadataMap(entityMetada);
+    this.eds.registerMetadataMap(entityMetada);
+    this.entityDataServvice.registerService(entityDataKey, this.coursesDataService)
   }
 }
