@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
-import {distinctUntilChanged, map} from 'rxjs/operators';
-import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
-import {AppState} from './reducers';
-import {isLoggedIn, isLoggedOut} from './auth/auth.selectors';
-import {login, logout} from './auth/auth.actions';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { login, logout } from './auth/auth.actions';
+import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
+import { AppState } from './reducers';
 
 @Component({
     selector: 'app-root',
@@ -20,12 +20,18 @@ export class AppComponent implements OnInit {
 
     isLoggedOut$: Observable<boolean>;
 
-    constructor(private router: Router,
-                private store: Store<AppState>) {
-
-    }
+    constructor(
+        private router: Router,
+        private store: Store<AppState>,
+        private dc: ChangeDetectorRef
+    ) {}
 
     ngOnInit() {
+
+        // setInterval(() => {
+        //         this.dc.markForCheck();
+        //         this.dc.detectChanges();
+        // }, 100)
 
         const userProfile = localStorage.getItem("user");
 

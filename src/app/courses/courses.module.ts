@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { ChangeDetectorRef, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,13 +22,16 @@ import { CourseComponent } from './course/course.component';
 import { CoursesCardListComponent } from './courses-card-list/courses-card-list.component';
 import { EditCourseDialogComponent } from './edit-course-dialog/edit-course-dialog.component';
 import { HomeComponent } from './home/home.component';
+import { compareCourses } from './model/course';
 import { CourseEntityService, entityDataKey } from './services/course-entity.service';
 import { CoursesDataService } from './services/courses-data.service';
 import { CoursesHttpService } from './services/courses-http.service';
-
+import { CustomPushPipe } from './shared/push.pipe';
 
 const entityMetada: EntityMetadataMap = {
-  [entityDataKey]: {} // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
+  [entityDataKey]: {
+    sortComparer: compareCourses
+  } // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
 };
 
 
@@ -56,7 +59,8 @@ const entityMetada: EntityMetadataMap = {
     HomeComponent,
     CoursesCardListComponent,
     EditCourseDialogComponent,
-    CourseComponent
+    CourseComponent,
+    CustomPushPipe
   ],
   exports: [
     HomeComponent,
@@ -64,7 +68,9 @@ const entityMetada: EntityMetadataMap = {
     EditCourseDialogComponent,
     CourseComponent
   ],
-  entryComponents: [EditCourseDialogComponent],
+  entryComponents: [
+    EditCourseDialogComponent
+  ],
   providers: [
     CoursesHttpService,
     CourseEntityService,
@@ -77,10 +83,10 @@ export class CoursesModule {
   // Setting Up NgRx Data in a Lazy Loaded Module
   constructor(
     private eds: EntityDefinitionService,
-    private entityDataServvice: EntityDataService,
-    private coursesDataService: CoursesDataService
+    private entityDataService: EntityDataService,
+    private coursesDataService: CoursesDataService,
   ) {
     this.eds.registerMetadataMap(entityMetada);
-    this.entityDataServvice.registerService(entityDataKey, this.coursesDataService)
+    this.entityDataService.registerService(entityDataKey, this.coursesDataService)
   }
 }
