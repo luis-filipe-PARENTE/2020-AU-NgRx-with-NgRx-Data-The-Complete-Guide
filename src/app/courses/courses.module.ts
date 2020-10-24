@@ -22,16 +22,23 @@ import { CourseComponent } from './course/course.component';
 import { CoursesCardListComponent } from './courses-card-list/courses-card-list.component';
 import { EditCourseDialogComponent } from './edit-course-dialog/edit-course-dialog.component';
 import { HomeComponent } from './home/home.component';
+import { CourseEntityService } from './services/course-entity.service';
+import { CoursesResolver } from './services/course-resolver.service';
 import { CoursesHttpService } from './services/courses-http.service';
 
 const entityMetada: EntityMetadataMap = {
-  Course: {}
+  Course: {} // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
 };
+
+
 
 export const coursesRoutes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    resolve: {
+      courses: CoursesResolver
+    }
 
   },
   {
@@ -74,7 +81,9 @@ export const coursesRoutes: Routes = [
   ],
   entryComponents: [EditCourseDialogComponent],
   providers: [
-    CoursesHttpService
+    CoursesHttpService,
+    CourseEntityService,
+    CoursesResolver
   ]
 })
 export class CoursesModule {
