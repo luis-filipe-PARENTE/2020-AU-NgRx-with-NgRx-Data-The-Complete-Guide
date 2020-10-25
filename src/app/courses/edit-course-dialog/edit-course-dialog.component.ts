@@ -23,7 +23,9 @@ export class EditCourseDialogComponent {
 
   mode: 'create' | 'update';
 
-  loading$:Observable<boolean>;
+  get loading$(): Observable<boolean> {
+    return  this.courseEntityService.loading$;
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -67,11 +69,23 @@ export class EditCourseDialogComponent {
       ...this.form.value
     };
 
-    this.isUpdateMode 
-      ? this.courseEntityService.update(course)
-      : noop();
+    this.isUpdateMode() 
+      ? this.updateCourse(course)
+      : this.addCourse(course);
+ }
 
+  private updateCourse(course: Course): void {
+    this.courseEntityService.update(course);
     this.closeModal();
+  }
+
+  private addCourse(course: Course): void {
+    this.courseEntityService.add(course).pipe(
+      tap(newCourse => {
+        console.log('New course', newCourse);
+        this.closeModal();
+      })
+    ).subscribe();
   }
 
   private isUpdateMode(): boolean {

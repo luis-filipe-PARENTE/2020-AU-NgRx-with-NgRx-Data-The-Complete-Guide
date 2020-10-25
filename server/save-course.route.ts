@@ -12,9 +12,13 @@ export function saveCourse(req: Request, res: Response) {
         id = req.params["id"],
         changes = req.body.update.changes;
 
+        onSucess(res, id, changes);
+        /*
         Math.floor((Math.random() * 10) + 1) > 5
             ? onSucess(res, id, changes)
-            : onError(res, id, changes);
+            : onError(res, id, changes);       
+       
+        */
 }
 
 function onSucess(res: Response, id: number, changes: Partial<Course>) {
