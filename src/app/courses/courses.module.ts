@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { EntityDataService, EntityDefinitionService, EntityMetadataMap } from '@ngrx/data';
+import { EffectsModule } from '@ngrx/effects';
 
 import { CourseRoutingModule } from './course-routing.module';
 import { CourseComponent } from './course/course.component';
@@ -23,15 +24,19 @@ import { CoursesCardListComponent } from './courses-card-list/courses-card-list.
 import { EditCourseDialogComponent } from './edit-course-dialog/edit-course-dialog.component';
 import { HomeComponent } from './home/home.component';
 import { compareCourses } from './model/course';
+import { CoursesEffects } from './ngrx-data/courses.effects';
 import { CourseEntityService, entityDataKey } from './services/course-entity.service';
 import { CoursesDataService } from './services/courses-data.service';
 import { CoursesHttpService } from './services/courses-http.service';
 import { CustomPushPipe } from './shared/push.pipe';
 
 const entityMetada: EntityMetadataMap = {
-  [entityDataKey]: {
-    sortComparer: compareCourses
-  } // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
+  [entityDataKey]: { // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
+    sortComparer: compareCourses,
+    entityDispatcherOptions: {
+      optimisticUpdate: true
+    }
+  } 
 };
 
 
@@ -53,7 +58,8 @@ const entityMetada: EntityMetadataMap = {
     MatDatepickerModule,
     MatMomentDateModule,
     ReactiveFormsModule,
-    CourseRoutingModule
+    CourseRoutingModule,
+    EffectsModule.forRoot([CoursesEffects]),
   ],
   declarations: [
     HomeComponent,

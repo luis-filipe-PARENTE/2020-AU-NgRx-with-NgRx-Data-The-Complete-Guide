@@ -1,9 +1,12 @@
-import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Course} from '../model/course';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {CoursesHttpService} from '../services/courses-http.service';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { noop, Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+
+import { Course } from '../model/course';
+import { CourseEntityService } from '../services/course-entity.service';
+
 
 @Component({
   selector: 'course-dialog',
@@ -26,7 +29,8 @@ export class EditCourseDialogComponent {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditCourseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data,
-    private coursesService: CoursesHttpService) {
+    private courseEntityService: CourseEntityService
+  ) {
 
     this.dialogTitle = data.dialogTitle;
     this.course = data.course;
@@ -53,7 +57,7 @@ export class EditCourseDialogComponent {
   }
 
   onClose() {
-    this.dialogRef.close();
+    this.closeModal();
   }
 
   onSave() {
@@ -63,13 +67,19 @@ export class EditCourseDialogComponent {
       ...this.form.value
     };
 
-    this.coursesService.saveCourse(course.id, course)
-      .subscribe(
-        () => this.dialogRef.close()
-      )
+    this.isUpdateMode 
+      ? this.courseEntityService.update(course)
+      : noop();
 
-
+    this.closeModal();
   }
 
+  private isUpdateMode(): boolean {
+    return this.mode == 'update';
+  }
+  
+  private closeModal(): void {
+    this.dialogRef.close();
+  }
 
 }

@@ -11,7 +11,3 @@ export interface Course {
   lessonsCount: number;
   promo: boolean;
 }
-
-export const compareCourses = (c1:Course, c2: Course) => c1.seqNo - c2.seqNo;
-
-
