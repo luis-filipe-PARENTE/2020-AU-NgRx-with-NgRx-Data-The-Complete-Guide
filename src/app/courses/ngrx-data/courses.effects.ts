@@ -29,6 +29,25 @@ export class CoursesEffects {
             )
     });
 
+    delteOnError$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofEntityType(entityDataKey),
+            ofEntityOp([EntityOp.SAVE_DELETE_ONE_ERROR]),
+            map(action => {
+                return this.entityActionFactory.create(
+                  entityDataKey,
+                  EntityOp.UNDO_ONE,
+                  action.payload.data.originalAction.payload.data,
+                  {
+                    correlationId: action.payload.data.originalAction.payload.correlationId,
+                    mergeStrategy: MergeStrategy.IgnoreChanges,
+                    isOptimistic: true
+                  }
+                );
+              })
+            )
+    });
+
     constructor(
         private actions$: Actions,
         private entityActionFactory: EntityActionFactory
