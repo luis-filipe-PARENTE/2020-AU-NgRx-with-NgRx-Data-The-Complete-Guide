@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { concatMap, map, tap } from 'rxjs/operators';
+import { noop, Observable } from 'rxjs';
+import { delay, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Course } from '../model/course';
 import { Lesson } from '../model/lesson';
@@ -20,9 +20,19 @@ export class CourseComponent implements OnInit {
 
   lessons$: Observable<Lesson[]>;
 
+  disableBtnLoadMore: boolean = false;
+
   displayedColumns = ['seqNo', 'description', 'duration'];
 
   nextPage = 0;
+
+  get loading$(): Observable<boolean> {
+      // Expression has changed after it was checked. Previous value: 'false'. Current value: 'true'
+      // In the same run detection change we have in the first time the value false and in the first emition of lessonEntityService the 
+      // Value of true
+      // So we need to add a pipe with delay, 
+      return this.lessonEntityService.loading$.pipe(delay(0));
+  }
 
   constructor(
     private courseEntityService: CourseEntityService,
@@ -33,8 +43,8 @@ export class CourseComponent implements OnInit {
 
   ngOnInit() {
 
+    // const courseUrl = this.route.snapshot.paramMap.get('courseUrl'); //better
     const { params: {courseUrl} } = this.route.snapshot.paramMap as any;
-    debugger;
 
     this.course$ = this.courseEntityService.entities$.pipe(
       map(courses => courses.find(course => course.url === courseUrl))
@@ -45,13 +55,24 @@ export class CourseComponent implements OnInit {
     //   tap(console.log)
     // );
 
-    this.lessons$ = of([]);
-
+    this.lessons$ = this.lessonEntityService.entities$.pipe(
+      withLatestFrom(this.course$),
+      tap(([, course]) => !this.nextPage ? this.loadLessonsPage(course): noop),
+      map(([lessons, course]) => lessons.filter(lesson => lesson.courseId === course.id))
+    );
   }
-
 
   loadLessonsPage(course: Course) {
 
+    this.lessonEntityService.getWithQuery({
+      'courseId': course.id.toString(),
+      'pageNumber': this.nextPage.toString(),
+      'pageSize': '3'
+    }).pipe(
+      tap(lessons => this.disableBtnLoadMore = !lessons.length)
+    ).subscribe();
+
+    this.nextPage++;  
   }
 
 }

@@ -45,7 +45,7 @@
   </mat-table>
 
 
-  <button class="bottom-toolbar" mat-raised-button color="accent"
+  <button [disabled]="disableBtnLoadMore" class="bottom-toolbar" mat-raised-button color="accent"
           (click)="loadLessonsPage(course)">Load More</button>
 
 </div>
