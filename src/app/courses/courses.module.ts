@@ -24,21 +24,25 @@ import { CoursesCardListComponent } from './courses-card-list/courses-card-list.
 import { EditCourseDialogComponent } from './edit-course-dialog/edit-course-dialog.component';
 import { HomeComponent } from './home/home.component';
 import { compareCourses } from './model/course';
+import { compareLessons } from './model/lesson';
 import { CoursesEffects } from './ngrx-data/courses.effects';
-import { CourseEntityService, entityDataKey } from './services/course-entity.service';
+import { CourseEntityService, entityDataKeyCourse } from './services/course-entity.service';
 import { CoursesDataService } from './services/courses-data.service';
 import { CoursesHttpService } from './services/courses-http.service';
+import { entityDataKeyLesson, LessonEntityService } from './services/lesson-entity.service';
 import { CustomPushPipe } from './shared/push.pipe';
 
 const entityMetada: EntityMetadataMap = {
-  [entityDataKey]: { // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
+  [entityDataKeyCourse]: { // ==>  this key name is what ngrx data use to make calls to the backend, but it plurilize it /courses
     sortComparer: compareCourses,
     entityDispatcherOptions: {
       optimisticUpdate: true
     }
-  } 
+  },
+  [entityDataKeyLesson]: {
+    sortComparer: compareLessons
+  }
 };
-
 
 @NgModule({
   imports: [
@@ -80,7 +84,8 @@ const entityMetada: EntityMetadataMap = {
   providers: [
     CoursesHttpService,
     CourseEntityService,
-    CoursesDataService
+    CoursesDataService,
+    LessonEntityService
   ]
 })
 export class CoursesModule {
@@ -93,6 +98,6 @@ export class CoursesModule {
     private coursesDataService: CoursesDataService,
   ) {
     this.eds.registerMetadataMap(entityMetada);
-    this.entityDataService.registerService(entityDataKey, this.coursesDataService)
+    this.entityDataService.registerService(entityDataKeyCourse, this.coursesDataService)
   }
 }
