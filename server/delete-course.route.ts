@@ -10,7 +10,7 @@ export function deleteCourse(req: Request, res: Response) {
           course = COURSES[id];
 
      Math.floor((Math.random() * 10) + 1) > 5
-          ? onError(res, id)
+          ? onSucess(res, id)
           : onError(res, id);       
 }
 

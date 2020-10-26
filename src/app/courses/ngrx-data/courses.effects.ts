@@ -3,7 +3,7 @@ import { EntityActionFactory, EntityOp, MergeStrategy, ofEntityOp, ofEntityType 
 import { Actions, createEffect } from '@ngrx/effects';
 import { map } from 'rxjs/operators';
 
-import { entityDataKey } from '../services/course-entity.service';
+import { entityDataKeyCourse } from '../services/course-entity.service';
 
 // import { State } from "./state";
 @Injectable()
@@ -11,12 +11,12 @@ export class CoursesEffects {
 
     updateOnError$ = createEffect(() => {
         return this.actions$.pipe(
-            ofEntityType(entityDataKey),
+            ofEntityType(entityDataKeyCourse),
             ofEntityOp([EntityOp.SAVE_UPDATE_ONE_ERROR]),
             map(action => {
 
                 return this.entityActionFactory.create(
-                  entityDataKey,
+                  entityDataKeyCourse,
                   EntityOp.UNDO_ONE,
                   action.payload.data.originalAction.payload.data,
                   {
@@ -31,11 +31,11 @@ export class CoursesEffects {
 
     delteOnError$ = createEffect(() => {
         return this.actions$.pipe(
-            ofEntityType(entityDataKey),
+            ofEntityType(entityDataKeyCourse),
             ofEntityOp([EntityOp.SAVE_DELETE_ONE_ERROR]),
             map(action => {
                 return this.entityActionFactory.create(
-                  entityDataKey,
+                  entityDataKeyCourse,
                   EntityOp.UNDO_ONE,
                   action.payload.data.originalAction.payload.data,
                   {

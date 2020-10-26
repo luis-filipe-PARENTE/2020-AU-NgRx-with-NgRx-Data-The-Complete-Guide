@@ -6,38 +6,33 @@
   <ng-container *ngIf="form">
 
     <div class="spinner-container" *ngIf="loading$ | async">
-
       <mat-spinner></mat-spinner>
-
     </div>
 
     <ng-container [formGroup]="form">
 
       <mat-form-field>
-
-        <input matInput
-               placeholder="Course Description"
-               formControlName="description">
-
+         <input 
+            matInput
+            placeholder="Course Description"
+            formControlName="description">
       </mat-form-field>
 
       <ng-container *ngIf="mode == 'create'">
 
         <mat-form-field>
-
-          <input matInput
-                 placeholder="Course Url"
-                 formControlName="url">
-
+          <input 
+              matInput
+              placeholder="Course Url"
+              formControlName="url">
         </mat-form-field>
 
         <mat-form-field>
-
-          <input matInput
-                 placeholder="Course Icon Url"
-                 formControlName="iconUrl">
-
-        </mat-form-field>
+          <input 
+              matInput
+              placeholder="Course Icon Url"
+              formControlName="iconUrl">
+       </mat-form-field>
 
       </ng-container>
 

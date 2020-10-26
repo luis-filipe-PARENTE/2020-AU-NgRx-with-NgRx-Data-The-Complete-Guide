@@ -6,7 +6,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Course } from '../model/course';
-import { entityDataKey } from './course-entity.service';
+import { entityDataKeyCourse } from './course-entity.service';
 
 
 
@@ -17,7 +17,7 @@ export class CoursesDataService extends DefaultDataService<Course> {
         http: HttpClient,
         httpUrlGenerator: HttpUrlGenerator
     ){
-        super(entityDataKey, http, httpUrlGenerator);
+        super(entityDataKeyCourse, http, httpUrlGenerator);
     }
 
     getAll(): Observable<Course[]> {
